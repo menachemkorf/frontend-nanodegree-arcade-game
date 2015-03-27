@@ -71,7 +71,7 @@ var Player = function() {
     this.col;
     this.row;
     this.state;
-    this.lives;
+    this.lives = 1;
     this.reset();
 };
 
@@ -79,17 +79,19 @@ var Player = function() {
 Player.prototype.update = function() {
 
     this.handleState();
-    this.lives = (4 - this.numCollisions);
+    //this.lives = (4 - this.numCollisions);
 
     if (this.isCollision()){
         this.numCollisions++;
         this.state = "collision";
-
-        if (this.numCollisions === 5) {
-            this.state = "gameOver";
-            //this.numCollisions = 0;
-        }
+        this.lives--;
     }
+
+    if (this.lives === 0) {
+        this.state = "gameOver";
+        //this.numCollisions = 0;
+    }
+
     if (this.row === 0) {
         this.state = "passedLevel";
     }
@@ -111,12 +113,13 @@ Player.prototype.handleState = function() {
             this.notifications("Ouch!");
 
             //Reset the player
-            this.reset();
+            resetAll();
             break;
 
         case "gameOver":
             //reset level
             game.level = 1;
+            this.lives = 1;
 
             //Empty allEnemies array
             allEnemies.length = 0;
@@ -142,6 +145,7 @@ Player.prototype.handleState = function() {
             resetAll();
 
             game.level++;
+            this.lives++;
         default:
     }
     this.state = "";
