@@ -48,6 +48,8 @@ var Engine = (function(global) {
          * our update function since it may be used for smooth animation.
          */
         update(dt);
+
+        //check that game is not paused or alerting the user
         if (!game.pause && !game.notice) {
             render();
         }

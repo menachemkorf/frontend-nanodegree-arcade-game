@@ -79,22 +79,8 @@ var Player = function() {
 Player.prototype.update = function() {
 
     this.handleState();
-    //this.lives = (4 - this.numCollisions);
+    this.updateState();
 
-    if (this.isCollision()){
-        this.numCollisions++;
-        this.state = "collision";
-        this.lives--;
-    }
-
-    if (this.lives === 0) {
-        this.state = "gameOver";
-        //this.numCollisions = 0;
-    }
-
-    if (this.row === 0) {
-        this.state = "passedLevel";
-    }
 };
 
 //Draw the player to screen
@@ -107,48 +93,60 @@ Player.prototype.render = function() {
 //checks players state, and updates player accordingly
 //options: collision, gameOver, passedLevel
 Player.prototype.handleState = function() {
-    switch (this.state) {
-        case "collision":
-            //Notify user of game state
-            this.notifications("Ouch!");
+    if (this.state === "collision") {
 
-            //Reset the player
-            resetAll();
-            break;
+        //Notify user of game state
+        this.notifications("Ouch!");
 
-        case "gameOver":
-            //reset level
-            game.level = 1;
-            this.lives = 1;
+        //Reset the player
+        resetAll();
+    } else if (this.state === "gameOver"){
+        game.level = 1;
+        this.lives = 1;
 
-            //Empty allEnemies array
-            allEnemies.length = 0;
+        //Empty allEnemies array
+        allEnemies.length = 0;
 
-            //Add one enemy to allEnemies array
-            getEnemies();
+        //Add one enemy to allEnemies array
+        getEnemies();
 
-            //Notify user of game state
-            this.notifications("Game Over");
+        //Notify user of game state
+        this.notifications("Game Over!");
 
-            //Reset the player and the enemies
-            resetAll();
-            break;
+        //Reset the player and the enemies
+        resetAll();
+    } else if (this.state === "passedLevel"){
+        //Notify user of game state
+        this.notifications("You passed level " + game.level + "!");
 
-        case "passedLevel":
-            //Notify user of game state
-            this.notifications("You passed level " + game.level + "!");
+        //Add one enemy to allEnemies array
+        getEnemies();
 
-            //Add one enemy to allEnemies array
-            getEnemies();
+        //Reset the player and the enemies
+        resetAll();
 
-            //Reset the player and the enemies
-            resetAll();
-
-            game.level++;
-            this.lives++;
-        default:
+        game.level++;
+        this.lives++;
     }
+    //Reset state
     this.state = "";
+};
+
+
+Player.prototype.updateState = function() {
+    if (this.isCollision()){
+        this.state = "collision";
+        this.lives--;
+    }
+
+    if (this.lives === 0) {
+        this.state = "gameOver";
+    }
+
+    //Player reached the top row
+    if (this.row === 0) {
+        this.state = "passedLevel";
+    }
 };
 
 //Display amount of lives left
