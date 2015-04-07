@@ -12,7 +12,7 @@ var game = {
             game.pause = !game.pause;
         }
     },
-    //Use message helper to notify user of state
+    //Use message helper 'massage.js' to notify user of state
     notifications: function(message) {
         game.notice = true;
         dhtmlx.alert(message, function(){
