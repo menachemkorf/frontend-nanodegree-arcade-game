@@ -1,6 +1,24 @@
 frontend-nanodegree-arcade-game
 ===============================
 
-Students should use this rubric: https://www.udacity.com/course/viewer#!/c-ud015/l-3072058665/m-3072588797
+Overview
+---------
 
-for self-checking their submission.
+Player must reach the water without colliding into bugs to pass level.
+
+The game begins with one bug, moving at a random speed along the stone tiles, each level adds one bug.
+
+The player begins on the bottom row with one life, with each level passed the player gets one extra life, with each collision the player looses one life, when the player has no lives left its game over.
+
+With each collision or passed level the bugs get rearranged, and the player gets placed on the bottom row.
+
+
+
+Controlls
+---------
+
+Up arrow moves the player up,
+Down arrow moves the player down,
+Left arrow moves the player left,
+Right arrow moves the player right,
+Space bar pauses and resumes game action.

@@ -1,4 +1,4 @@
-//Object with properties that aren't connected to the player or the enemies
+//Object with properties that aren't directly connected to the player or the enemies
 var game = {
     pause: false,
     notice: false,
@@ -11,6 +11,13 @@ var game = {
             //space toggles pause mode
             game.pause = !game.pause;
         }
+    },
+    //Use message helper to notify user of state
+    notifications: function(message) {
+        game.notice = true;
+        dhtmlx.alert(message, function(){
+            game.notice = false;
+        });
     }
 };
 
@@ -24,7 +31,6 @@ var Enemy = function() {
     this.sprite = 'images/enemy-bug.png';
     this.speed = this.getSpeed();
     this.reset();
-    //this.speed = 0.1;
 };
 
 // Update the enemy's position, required method for game
@@ -33,7 +39,6 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
-    //console.log(dt);
     this.col += (this.speed * dt);
     if (this.col > 5) {
         this.col = -1;
@@ -42,20 +47,16 @@ Enemy.prototype.update = function(dt) {
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
-    //ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-    //ctx.drawImage(Resources.get(this.sprite), 101*3, -10 +83*3);
-    //this.board(this.col, this.row);
     ctx.drawImage(Resources.get(this.sprite),101 * this.col, - 15 + 83 * this.row);
-    //console.log(this + " row: " + this.row + " col: " + this.col);
 };
 
-//places enemy on random square
+//Place enemy on a random square
 Enemy.prototype.reset = function() {
     this.col = Math.floor(Math.random()*5);
     this.row = Math.floor(Math.random()*3 + 1);
 };
 
-//sets enemy to move at a random speed
+//Set enemy to move at a random speed
 Enemy.prototype.getSpeed = function() {
     speedArr = [1, 1.5, 2];
     var speed = Math.floor(Math.random() * speedArr.length);
@@ -77,10 +78,8 @@ var Player = function() {
 
 // Update the player's position
 Player.prototype.update = function() {
-
     this.handleState();
     this.updateState();
-
 };
 
 //Draw the player to screen
@@ -90,41 +89,32 @@ Player.prototype.render = function() {
     this.displayLives();
 };
 
-//checks players state, and updates player accordingly
+//Check state, and update player accordingly
 //options: collision, gameOver, passedLevel
 Player.prototype.handleState = function() {
     if (this.state === "collision") {
-
         //Notify user of game state
-        this.notifications("Ouch!");
-
-        //Reset the player
+        game.notifications("Ouch!");
+        //Reset the player and the enemies
         resetAll();
     } else if (this.state === "gameOver"){
         game.level = 1;
         this.lives = 1;
-
         //Empty allEnemies array
         allEnemies.length = 0;
-
         //Add one enemy to allEnemies array
         getEnemies();
-
         //Notify user of game state
-        this.notifications("Game Over!");
-
+        game.notifications("Game Over!");
         //Reset the player and the enemies
         resetAll();
     } else if (this.state === "passedLevel"){
         //Notify user of game state
-        this.notifications("You passed level " + game.level + "!");
-
+        game.notifications("You passed level " + game.level + "!");
         //Add one enemy to allEnemies array
         getEnemies();
-
         //Reset the player and the enemies
         resetAll();
-
         game.level++;
         this.lives++;
     }
@@ -132,7 +122,9 @@ Player.prototype.handleState = function() {
     this.state = "";
 };
 
-
+//Check for collision, game over or passed level
+//store results in state variable,
+//update amount of lives
 Player.prototype.updateState = function() {
     if (this.isCollision()){
         this.state = "collision";
@@ -166,13 +158,12 @@ Player.prototype.isCollision = function() {
 };
 
 //Use message helper to notify user of player state
-Player.prototype.notifications = function(message) {
+/*Player.prototype.notifications = function(message) {
     game.notice = true;
     dhtmlx.alert(message, function(){
         game.notice = false;
     });
-
-};
+};*/
 
 //Place the player at a random square on the bottom row
 Player.prototype.reset = function() {
