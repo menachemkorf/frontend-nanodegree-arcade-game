@@ -21,8 +21,8 @@ With each collision  or passed level the user will be notified, the bugs will ge
 Controlls
 ---------
 
-Up arrow moves the player up,
-Down arrow moves the player down,
-Left arrow moves the player left,
-Right arrow moves the player right,
-Space bar pauses and resumes game action.
+* Up arrow moves the player up
+* Down arrow moves the player down
+* Left arrow moves the player left
+* Right arrow moves the player right
+* Space bar pauses and resumes game action
