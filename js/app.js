@@ -157,14 +157,6 @@ Player.prototype.isCollision = function() {
     return false;
 };
 
-//Use message helper to notify user of player state
-/*Player.prototype.notifications = function(message) {
-    game.notice = true;
-    dhtmlx.alert(message, function(){
-        game.notice = false;
-    });
-};*/
-
 //Place the player at a random square on the bottom row
 Player.prototype.reset = function() {
     this.col = Math.floor(Math.random()*5);
