@@ -26,3 +26,9 @@ Controlls
 * Left arrow moves the player left
 * Right arrow moves the player right
 * Space bar pauses and resumes game action
+
+Tech
+----
+
+* jQuery
+* dhtmlx alert message library
